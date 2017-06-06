@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>分时租赁</title>
+	<link rel="stylesheet" href="common/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="common/font-awesome-4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="common/reset-css/reset.css">
+	<link rel="stylesheet" href="src/style.css">
+	<script type="text/javascript" src="common/jquery/dist/jquery.js"></script>
+	<script type="text/javascript" src="common/vue/dist/vue.js"></script>
+	<script type="text/javascript" src="common/vue-router/dist/vue-router.js"></script>
+	<style>
+		html, body{
+			height: 100%;
+		}
+		.nav-pills > li > a{
+			border-radius: 0;
+		}
+		.container-fluid{
+			padding: 0;
+		}
+		.row{
+			margin: 0;
+		}
+		nav{
+			height: 80px;
+			background: #5683D2;
+		}
+		.sidebar{
+			border: 1px solid #000;
+			border-left: 0;
+			border-top: 0;
+			min-height: 768px;
+			padding: 0;
+		}
+		.sidebar .search{
+			padding: 10px 15px 20px;
+			position: relative;
+		}
+		.sidebar .search .clear-input{
+			position: absolute;
+			left: 73%;
+			top: 25%;
+			font-size: 18px;
+			z-index: 10;
+			cursor: pointer;
+			color:#999;
+		}
+		.main{
+			border-bottom: 1px solid #000;
+			min-height: 768px;
+			position: relative;
+		}
+		.main .toggle-btn{
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 10;
+		}
+	</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<nav></nav>
+		<div class="content row" id="content">
+			<div class="sidebar col-md-2">
+				<div class="input-group search">
+					<span class="clear-input">&times;</span>
+					<input type="text" class="form-control" placeholder="search">
+					<span class="input-group-btn">
+						<button class="btn btn-primary" type="button">Go!</button>
+					</span>
+				</div>
+				<ul class="nav nav-pills nav-primary nav-stacked">
+					<li class="active"><router-link to="/menu1">菜单1</router-link></li>
+					<li><router-link to="/menu2">菜单2</router-link></li>
+					<li><router-link to="/menu3">菜单3</router-link></li>
+					<li><router-link to="/menu4">菜单4</router-link></li>
+				</ul>
+			</div>
+			<div class="main col-md-10">
+				<div class="toggle-btn">
+					<button class="btn btn-primary" id="toggle"><span class="fa fa-bars"></span></button>
+				</div>
+				<div class="content">
+					<router-view></router-view>
+					<menu-component></menu-component>
+				</div>
+			</div>
+		</div>
+	</div>
+	<template id="menu123">
+		<div>我喜欢用Vue.js!</div>
+	</template>
+</body>
+</html>
+<script type="text/javascript" src="common/bootstrap/dist/js/bootstrap.js"></script>
+<script type="text/javascript">
+	const Menu1 = { template: '<div id="map" style="width:100%;height:800px;"></div>'}
+	const Menu2 = { template: '<div>menu2</div>'}
+	const Menu3 = { template: '<div>menu3</div>'}
+	const Menu4 = { template: '<div>menu4</div>'}
+
+	const routes = [
+		{ path: '/menu1', component: Menu1},
+		{ path: '/menu2', component: Menu2},
+		{ path: '/menu3', component: Menu3},
+		{ path: '/menu4', component: Menu4}
+	]
+
+	const router = new VueRouter({
+		routes
+	})
+
+	Vue.component('menu-component', {
+		template: '#menu123'
+	})
+
+	new Vue({
+		el: '#content',
+		router
+	})
+
+	$('#toggle').on('click', function() {
+		var coll = $('.sidebar').attr('class').indexOf('collapse');
+		if(coll < 0){
+			$('.sidebar').addClass('collapse');
+			$('.main').removeClass('col-md-10').addClass('col-md-12');
+		}else{
+			$('.sidebar').removeClass('collapse');
+			$('.main').removeClass('col-md-12').addClass('col-md-10');
+		}
+	});
+	$('.clear-input').on('click', function() {
+		$(this).parent().find('input').val('');
+	});
+
+	function loadJScript() {
+		var script = document.createElement("script");
+		script.type = "text/javascript";
+		script.src = "http://api.map.baidu.com/api?v=2.0&ak=nMGfG6QjEl9I811ikNDZWTlxGkU9hqjU&callback=init";
+		document.body.appendChild(script);
+	}
+
+	function init() {
+		var map = new BMap.Map("map");            // 创建Map实例
+		var point = new BMap.Point(116.404, 39.915); // 创建点坐标
+		map.centerAndZoom(point,15);                 
+		map.enableScrollWheelZoom();                 //启用滚轮放大缩小
+	}  
+	window.onload = loadJScript;  //异步加载地图
+</script>

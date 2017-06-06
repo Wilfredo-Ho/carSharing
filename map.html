@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<!-- nMGfG6QjEl9I811ikNDZWTlxGkU9hqjU -->
+	<!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nMGfG6QjEl9I811ikNDZWTlxGkU9hqjU&callback=mapInit"></script> -->
+</head>
+<body>
+	<div id="map" style="width: 800px;height: 800px;"></div>
+</body>
+<script>
+	function loadJScript() {
+		var script = document.createElement("script");
+		script.type = "text/javascript";
+		script.src = "http://api.map.baidu.com/api?v=2.0&ak=nMGfG6QjEl9I811ikNDZWTlxGkU9hqjU&callback=init";
+		document.body.appendChild(script);
+	}
+	function init() {
+		var map = new BMap.Map("map");            // 创建Map实例
+		var point = new BMap.Point(116.404, 39.915); // 创建点坐标
+		map.centerAndZoom(point,15);                 
+		map.enableScrollWheelZoom();                 //启用滚轮放大缩小
+	}  
+	window.onload = loadJScript;  //异步加载地图
+</script>
+</html>
